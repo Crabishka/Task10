@@ -1,17 +1,21 @@
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.plaf.TableHeaderUI;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import sun.swing.table.DefaultTableCellHeaderRenderer;
 import util.*;
 
 
 public class MainForm extends JFrame {   // в чем отличие JFrame от Jdialog
+
     private JPanel MainPanel;
     private JTable InputTable;
     private JButton GetFromFileButton;
@@ -32,13 +36,16 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
 
 
 
+
     public MainForm() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setSize(600, 300);  // не работает нормально из-за "пружин"
+        this.setSize(800, 600);  // не работает нормально из-за "пружин"
         this.setTitle("MainForm");      // устанавливает название формы
+        this.setLocationRelativeTo(null);
         // this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);   // устанавливает правила при нажатии на крестик
         this.setContentPane(MainPanel);  // без понятия, что делает, но без этого не работает
         this.pack();  // без понятия, что делает
+
 
 
         /*
@@ -47,8 +54,9 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
         которые бы запускались в MainForm, но что-то не получилось не получилось
          */
 
-        JTableUtils.initJTableForArray(InputTable, 100, true, true, true, false);
-        JTableUtils.initJTableForArray(OutputTable, 100, true, true, false, false);
+
+        JTableUtils.initJTableForArray(InputTable, 110, true, true, true, false);
+        JTableUtils.initJTableForArray(OutputTable, 110, true, true, false, false);
         JTableUtils.resizeJTable(InputTable,1,6,25,-1);
         JTableUtils.resizeJTable(OutputTable,1,6,25,-1);
 
@@ -88,7 +96,7 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
-                    int[] a = ArrayUtils.createRandomIntArray(
+                    int[][] a = ArrayUtils.createRandomIntMatrix(
                             InputTable.getRowCount(), InputTable.getColumnCount(), 100);
                     JTableUtils.writeArrayToJTable(InputTable, a);
                 } catch (Exception e) {
@@ -105,7 +113,7 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
                     Logic logic = new Logic();
                     List<Triangle> list= SwingAndListFunction.readListFromJtable(InputTable); // прочитал
                     List<List<Triangle>> result = logic.Operation(list); // посчитал
-                    JTableUtils.resizeJTable(OutputTable,result.size()+SwingAndListFunction.sizeOfAllElementsOfList(result),6,-1,-1); // изменил
+                    JTableUtils.resizeJTable(OutputTable,result.size()+SwingAndListFunction.sizeOfAllElementsOfList(result) - 1,6,-1,-1); // изменил
                     SwingAndListFunction.writeListOfListIntoJtable(OutputTable, result); // записал
 
                 } catch (Exception e) {
@@ -142,5 +150,7 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
 
     private void createUIComponents() {
         // TODO: place custom component creation code here
+
+
     }
 }

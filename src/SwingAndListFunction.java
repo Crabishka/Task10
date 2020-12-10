@@ -29,7 +29,8 @@ public class SwingAndListFunction {
         DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
         // list.removeAll(Arrays.asList("", null));
         tableModel.setColumnCount(6);
-        tableModel.setRowCount(sizeOfAllElementsOfList(list) + list.size());
+        int absoluteSize = sizeOfAllElementsOfList(list) + list.size();
+        tableModel.setRowCount(absoluteSize);
         int i = 0;
         int j = 0;
         for (List<Triangle> groupOfTriangle : list) {
@@ -42,9 +43,12 @@ public class SwingAndListFunction {
 
                 i++;
             }
-            for (j = 0; j < 6; j++)
-                tableModel.setValueAt("", i, j);
-            i++;
+            for (int k =0;k<6;k++) tableModel.setValueAt("", i ,k);
+            if (i != absoluteSize){
+
+                i++;
+
+            }
 
         }
 
@@ -60,7 +64,7 @@ public class SwingAndListFunction {
     }
 
     public static List<Triangle> readListFromJtable(JTable table) {
-        DefaultTableModel tableModel = (DefaultTableModel) table.getModel();
+        DefaultTableModel tableModel = (DefaultTableModel) table.getModel(); // получаем таблицу
         List<Triangle> list = new ArrayList<>();
         int s;
         for (int i = 0; i < tableModel.getRowCount(); i++) {
@@ -72,7 +76,7 @@ public class SwingAndListFunction {
                         Integer.parseInt(String.valueOf(tableModel.getValueAt(i, 3))),
                         Integer.parseInt(String.valueOf(tableModel.getValueAt(i, 4))),
                         Integer.parseInt(String.valueOf(tableModel.getValueAt(i, 5))));
-                list.add(triangle); // записываем
+                if (triangle.isTriangleExist()) list.add(triangle); // записываем
             } catch (NumberFormatException e) {
                 SwingUtils.showErrorMessageBox("Error", "Error", e);  // если не перевелось
             }

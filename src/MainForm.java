@@ -4,6 +4,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.plaf.TableHeaderUI;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -35,8 +36,6 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
     private JMenuBar menuBarMain;  // выбор меню, но он удален
 
 
-
-
     public MainForm() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(800, 600);  // не работает нормально из-за "пружин"
@@ -57,8 +56,8 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
 
         JTableUtils.initJTableForArray(InputTable, 110, true, true, true, false);
         JTableUtils.initJTableForArray(OutputTable, 110, true, true, false, false);
-        JTableUtils.resizeJTable(InputTable,1,6,25,-1);
-        JTableUtils.resizeJTable(OutputTable,1,6,25,-1);
+        JTableUtils.resizeJTable(InputTable, 1, 6, 25, -1);
+        JTableUtils.resizeJTable(OutputTable, 1, 6, 25, -1);
 
         fileChooserOpen = new JFileChooser();           // не сильно понимаю, что твориться следующие 20 строчек,
         fileChooserSave = new JFileChooser();           // но это вроде работа с файлами
@@ -73,9 +72,6 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
         fileChooserSave.setApproveButtonText("Save");
 
 
-
-
-
         GetFromFileButton.addActionListener(new ActionListener() {  // прочитать из файла
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
@@ -84,7 +80,7 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
                     if (fileChooserOpen.showOpenDialog(MainPanel) == JFileChooser.APPROVE_OPTION) {
                         List<Triangle> list = fileFunсtion.readListFromFile(fileChooserOpen.getSelectedFile().getPath());
                         SwingAndListFunction.writeListIntoJtable(InputTable, list);
-                        JTableUtils.resizeJTable(InputTable,list.size(),6,-1,-1);
+                        JTableUtils.resizeJTable(InputTable, list.size(), 6, -1, -1);
                     }
                 } catch (Exception e) {
                     SwingUtils.showErrorMessageBox(e);
@@ -97,7 +93,7 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
             public void actionPerformed(ActionEvent actionEvent) {
                 try {
                     int[][] a = ArrayUtils.createRandomIntMatrix(
-                            InputTable.getRowCount(), InputTable.getColumnCount(), 100);
+                            InputTable.getRowCount(), InputTable.getColumnCount(), 10);
                     JTableUtils.writeArrayToJTable(InputTable, a);
                 } catch (Exception e) {
                     SwingUtils.showErrorMessageBox(e);
@@ -111,9 +107,9 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
                 FileFunction fileFunction = new FileFunction();
                 try {
                     Logic logic = new Logic();
-                    List<Triangle> list= SwingAndListFunction.readListFromJtable(InputTable); // прочитал
+                    List<Triangle> list = SwingAndListFunction.readListFromJtable(InputTable); // прочитал
                     List<List<Triangle>> result = logic.Operation(list); // посчитал
-                    JTableUtils.resizeJTable(OutputTable,result.size()+SwingAndListFunction.sizeOfAllElementsOfList(result) - 1,6,-1,-1); // изменил
+                    JTableUtils.resizeJTable(OutputTable, result.size() + SwingAndListFunction.sizeOfAllElementsOfList(result) - 1, 6, -1, -1); // изменил
                     SwingAndListFunction.writeListOfListIntoJtable(OutputTable, result); // записал
 
                 } catch (Exception e) {
@@ -134,7 +130,7 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
                             file += ".txt";
                         }
                         Logic logic = new Logic();
-                        fileFunсtion.writeListIntoFile(file,logic.Operation(list));
+                        fileFunсtion.writeListIntoFile(file, logic.Operation(list));
                        /* FileWriter writer = new FileWriter(file, false);
                         writer.write(Logic.Operation(matrix));
                         writer.close();
@@ -149,7 +145,7 @@ public class MainForm extends JFrame {   // в чем отличие JFrame от
 
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
+
 
 
     }

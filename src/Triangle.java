@@ -1,56 +1,57 @@
+import java.util.Arrays;
+
 public class Triangle {
-    int x1, y1, x2, y2, y3, x3;
-    boolean isTriangleGrouped = false;
 
-    public Triangle(int x1, int y1, int x2, int y2, int x3, int y3) {
-        this.x1 = x1;
-        this.y1 = y1;
-        this.x2 = x2;
-        this.y2 = y2;
-        this.y3 = y3;
-        this.x3 = x3;
+    Point point1, point2, point3;
+
+    public boolean isSimilarTo(Triangle other) {
+        double[] b = other.getLengthArray();
+        double[] c = this.getLengthArray();
+        for (int i = 0; i < 3; i++) {
+            if (b[i] == 0) return false;
+        }
+        for (int i = 0; i < 3; i++) {
+            if (c[i] == 0) return false;
+        }
+        Arrays.sort(b);
+        Arrays.sort(c);
+        return b[0] / c[0] == b[1] / c[1] && b[0] / c[0] == b[2] / c[2];
     }
 
-    public boolean isTrianglePoint() {
-        if (x1 == x2 && x1 == x3 && y1 == y2 && y2 == y3) return true;
-        return false;
-    }
 
     public boolean isTriangleExist() {
-        double[] b = this.lengthArray();
-        if (b[1] + b[2] > b[0] && b[2] + b[0] > b[1] && b[1] + b[0] > b[2]) return true;
-        return false;
+        double[] b = this.getLengthArray();
+        return b[1] + b[2] > b[0] && b[2] + b[0] > b[1] && b[1] + b[0] > b[2];
     }
 
-    public double length(int x1, int x2, int y1, int y2) {
-        return Math.pow(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2), 0.5);
-    }
 
-    public double[] lengthArray() {
+    public double[] getLengthArray() {
         double[] a = new double[3];
-        a[0] = length(x1, x2, y1, y2);
-        a[1] = length(x1, x3, y1, y3);
-        a[2] = length(x3, x2, y3, y2);
+        a[0] = point1.distanceTo(point2);
+        a[1] = point2.distanceTo(point3);
+        a[2] = point3.distanceTo(point1);
         return a;
     }
 
     public Triangle(Point point1, Point point2, Point point3) {
-        this.x1 = point1.x;
-        this.y1 = point1.y;
-        this.x2 = point2.x;
-        this.y2 = point2.y;
-        this.x3 = point3.x;
-        this.y3 = point3.y;
+        this.point1 = point1;
+        this.point2 = point2;
+        this.point3 = point3;
     }
 
-    public class Point {
+    public static class Point {
 
-        private int x, y;
+        public int x, y;
 
         public Point(int x, int y) {
             this.x = x;
             this.y = y;
         }
+
+        public double distanceTo(Point other) {
+            return  Math.pow(Math.pow((this.x - other.x), 2) + Math.pow((this.y - other.y), 2), 0.5);
+        }
+
     }
 
 }

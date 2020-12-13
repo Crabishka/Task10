@@ -55,8 +55,9 @@ public class Main {
             winMain();
         } else {
             List<Triangle> list = fileFunction.readListFromFile(params.inputFile);
-            if (list == null) {
+            if (list.size() == 0) {
                 System.err.println("Can't read array");
+                System.exit(-2);
             }
             Logic logic = new Logic();
             fileFunction.writeListIntoFile(params.outputFile, logic.Operation(list));
